@@ -9,7 +9,7 @@ using namespace std;
 void AddWordToDictionary(map<string, string>& dictionary, const string& english, const string& russian) {
     if (dictionary.find(english) == dictionary.end()) {
         dictionary[english] = russian;
-        cout << "Слово успешно добавлено в словарь." << endl;
+        cout << "Слово добавлено в словарь." << endl;
     } else {
         cout << "Слово уже существует в словаре." << endl;
     }
@@ -21,7 +21,7 @@ void FindTranslation(const map<string, string>& dictionary, const string& englis
     if (it != dictionary.end()) {
         cout << "Перевод: " << it->second << endl;
     } else {
-        cout << "Слово не найдено в словаре." << endl;
+        cout << "Данного слова нет в словаре." << endl;
     }
 }
 
