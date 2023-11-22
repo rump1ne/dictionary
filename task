@@ -1,0 +1,100 @@
+#include <iostream>
+#include <map>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+// Функция для добавления слова в словарь
+void AddWordToDictionary(map<string, string>& dictionary, const string& english, const string& russian) {
+    if (dictionary.find(english) == dictionary.end()) {
+        dictionary[english] = russian;
+        cout << "Слово успешно добавлено в словарь." << endl;
+    } else {
+        cout << "Слово уже существует в словаре." << endl;
+    }
+}
+
+// Функция для поиска перевода слова
+void FindTranslation(const map<string, string>& dictionary, const string& english) {
+    auto it = dictionary.find(english);
+    if (it != dictionary.end()) {
+        cout << "Перевод: " << it->second << endl;
+    } else {
+        cout << "Слово не найдено в словаре." << endl;
+    }
+}
+
+// Функция для поиска английского перевода по русскому слову
+void FindEnglishTranslation(const map<string, string>& dictionary, const string& russian) {
+    bool found = false;
+    for (const auto& entry : dictionary) {
+        if (entry.second == russian) {
+            cout << "Английский перевод: " << entry.first << endl;
+            found = true;
+        }
+    }
+    
+    if (!found) {
+        cout << "Перевод на английский не найден." << endl;
+    }
+}
+
+// Функция для записи словаря в файл
+void WriteDictionaryToFile(const map<string, string>& dictionary, const string& filename) {
+    ofstream file(filename);
+    if (file.is_open()) {
+        for (const auto& entry : dictionary) {
+            file << entry.first << " " << entry.second << endl;
+        }
+        cout << "Словарь успешно сохранен в файл " << filename << endl;
+        file.close();
+    } else {
+        cout << "Не удалось открыть файл для записи." << endl;
+    }
+}
+
+int main() {
+    map<string, string> dictionary;
+    string command;
+
+    while (true) {
+        cout << "Выберите действие:" << endl;
+        cout << "1. Добавить слово в словарь" << endl;
+        cout << "2. Найти перевод слова (английский -> русский)" << endl;
+        cout << "3. Найти перевод слова (русский -> английский)" << endl;
+        cout << "4. Сохранить словарь в файл" << endl;
+        cout << "5. Выйти" << endl;
+        cin >> command;
+
+        if (command == "1") {
+            string english, russian;
+            cout << "Введите английское слово: ";
+            cin >> english;
+            cout << "Введите русский перевод: ";
+            cin >> russian;
+            AddWordToDictionary(dictionary, english, russian);
+        } else if (command == "2") {
+            string english;
+            cout << "Введите английское слово для поиска русского перевода: ";
+            cin >> english;
+            FindTranslation(dictionary, english);
+        } else if (command == "3") {
+            string russian;
+            cout << "Введите русское слово для поиска английского перевода: ";
+            cin >> russian;
+            FindEnglishTranslation(dictionary, russian);
+        } else if (command == "4") {
+            string filename;
+            cout << "Введите имя файла для сохранения словаря: ";
+            cin >> filename;
+            WriteDictionaryToFile(dictionary, filename);
+        } else if (command == "5") {
+            break;
+        } else {
+            cout << "Некорректная команда. Попробуйте еще раз." << endl;
+        }
+    }
+
+    return 0;
+}
